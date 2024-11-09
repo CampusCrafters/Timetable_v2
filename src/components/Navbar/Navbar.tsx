@@ -1,9 +1,14 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
+
+import GoogleSignOut from '@/utils/auth/signout';
+import { supabase } from '@/utils/auth/connect';
+import signInWithGoogle from '@/utils/auth/signin';
 
 export const Logo = () => (
   <span className="font-bold">
@@ -13,7 +18,36 @@ export const Logo = () => (
 );
 
 const Navbar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [session, setSession] = useState(false);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(!!data.session);
+    };
+    getSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(!!session);
+      if (session) {
+        router.push("/dashboard");
+      }
+    });
+   
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleSignIn = async () => {
+    await signInWithGoogle();
+  }
+  const handleSignOut = async () => {
+    await GoogleSignOut();
+    router.push("/"); // Redirect to the home page after sign-out
+  };
 
   return (
     <nav className="fixed w-full z-50 bg-transparent bg-opacity-40 backdrop-blur-md px-6 py-3">
@@ -34,7 +68,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Link href={`/#${item.toLowerCase()}`} className="text-lg text-white hover:text-yellow-400 transition-colors">
+                <Link href={`/${item.toLowerCase()}`} className="text-lg text-white hover:text-yellow-400 transition-colors">
                   {item}
                 </Link>
               </motion.div>
@@ -46,10 +80,11 @@ const Navbar = () => {
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
+              onClick={session ? handleSignOut : handleSignIn}
               className="flex items-center px-4 py-2 rounded-lg bg-white text-black font-medium transition-colors text-lg shadow-md hover:shadow-lg"
             >
               <FcGoogle className="w-5 h-5 mr-2" />
-              Sign in with Google
+              {session ? "Sign out with Google" : "Sign in with Google"}
             </motion.button>
           </div>
 
@@ -82,7 +117,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Link href={`/#${item.toLowerCase()}`} className="text-lg text-white hover:text-yellow-400 transition-colors">
+                <Link href={`/${item.toLowerCase()}`} className="text-lg text-white hover:text-yellow-400 transition-colors">
                   {item}
                 </Link>
               </motion.div>
@@ -90,10 +125,11 @@ const Navbar = () => {
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
+              onClick={session ? handleSignOut : handleSignIn}
               className="flex items-center max-w-full px-5 py-3 rounded-lg bg-white text-black font-medium transition-colors text-lg shadow-md hover:shadow-lg"
             >
               <FcGoogle className="w-5 h-5 mr-2" />
-              Sign in with Google
+              {session ? "Sign out" : "Sign in with Google"}
             </motion.button>
           </motion.div>
         )}

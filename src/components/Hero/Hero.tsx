@@ -4,8 +4,42 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, Users } from 'lucide-react';
 import Image from 'next/image';
 import BgImage from '../../../public/bg.png';
+import { supabase } from '@/utils/auth/connect';
+import { useEffect, useState } from 'react';
+import signInWithGoogle from '@/utils/auth/signin';
+import { fail, success } from '@/utils/toasts';
+import toast from 'react-hot-toast';
 
 const Hero = () => {
+
+  const [session, setSession] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+    const authError = document.cookie.split("; ").find(row => row.startsWith("AuthError="));
+    if(authError){
+      const errorMessage = authError.split("=")[1];
+      if(errorMessage === "SigninFirst"){
+        fail("Please sign in to continue");
+      }
+      if(errorMessage === "EnterCollegeEmail"){
+        fail("Please sign in with your college email to continue");
+    }
+  }
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(!!data.session);
+    };
+    getSession();
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(!!session);
+    });
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, 1000);
+  }, []);
+  
   return (
     <div className="relative min-h-screen bg-stone-950 flex items-center justify-center" id="about">
       {/* Background */}
@@ -82,10 +116,10 @@ const Hero = () => {
         <motion.button 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => window.location.href = '/#dashboard'}
+          onClick={session?() => window.location.href = '/dashboard' : signInWithGoogle}
           className="w-auto md:w-auto bg-yellow-400 hover:bg-yellow-500 text-stone-950 font-medium px-6 py-4 rounded-lg inline-flex items-center justify-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
         >
-          Get Started with Dashboard
+          {session? 'Get Started with Dashboard' : 'Get Started with Google'}
           <span className="ml-2">
             <svg 
               className="w-5 h-5" 
@@ -102,7 +136,6 @@ const Hero = () => {
             </svg>
           </span>
         </motion.button>
-
         {/* Secondary Link */}
         <p className="mt-4 text-gray-400 text-sm hover:text-yellow-500 transition-colors cursor-pointer">
           Continue to your dashboard
