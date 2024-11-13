@@ -7,14 +7,16 @@ interface CurrentClassProps {
 
 const CurrentClass = ({ classInfo }: CurrentClassProps) => {
   return (
-    <div className="bg-gradient-to-br from-stone-900 to-stone-800 text-white rounded-xl shadow-lg p-6 border border-stone-800 hover:border-yellow-500 transition-all duration-300 transform hover:-translate-y-1">
-      <h2 className="text-2xl font-semibold mb-4 flex items-center">
-        <GraduationCap className="mr-2 text-yellow-400" />
-        Current Class
-      </h2>
-      <h3 className="font-medium text-yellow-500 text-3xl mb-2">{classInfo.course || "No class in session"}</h3>
-      <p className="text-lg text-stone-400">
-        {classInfo.time} - {classInfo.faculty}
+    <div className="bg-gradient-to-br from-stone-900 to-stone-900 text-white rounded-lg shadow-md p-6 border border-stone-700 hover:shadow-xl hover:border-yellow-500 transition-all duration-300 transform hover:-translate-y-1">
+      <div className="flex items-center mb-4 space-x-3">
+        <GraduationCap className="text-yellow-400 w-6 h-6" />
+        <h2 className="text-xl font-semibold text-stone-100 tracking-tight">Current Class</h2>
+      </div>
+      <h3 className="text-2xl font-bold text-yellow-400 mb-1">
+        {classInfo.course || "No class in session"}
+      </h3>
+      <p className="text-base text-stone-300 leading-relaxed">
+        {classInfo.time ? `${classInfo.time} - ${classInfo.faculty}` : "No scheduled time"}
       </p>
     </div>
   );

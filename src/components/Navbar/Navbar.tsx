@@ -50,7 +50,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-transparent bg-opacity-40 backdrop-blur-md px-6 py-3">
+    <nav className="sm:fixed w-full z-50 bg-transparent bg-opacity-40 backdrop-blur-md px-6 py-3">
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-between h-14">
           {/* Logo Section */}
