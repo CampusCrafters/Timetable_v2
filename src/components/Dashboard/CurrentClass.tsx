@@ -1,6 +1,8 @@
 import { GraduationCap } from "lucide-react";
+import { ClassProps } from "../Interfaces";
 
-const CurrentClass = () => {
+
+const CurrentClass = ({name,time,instructor}: ClassProps) => {
   const currentClass = { name: "Mathematics", time: "10:00 AM - 11:00 AM", instructor: "Dr. Smith" };
 
   return (
@@ -18,3 +20,5 @@ const CurrentClass = () => {
 };
 
 export default CurrentClass;
+
+

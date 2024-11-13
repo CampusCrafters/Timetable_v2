@@ -1,6 +1,7 @@
 import { GraduationCap } from "lucide-react";
+import { UpcomingClass } from "../Interfaces";
 
-const UpcomingClasses = () => {
+const UpcomingClasses = (upcomingClasses: UpcomingClass) => {
   const classes = [
     { id: 1, name: "Physics", time: "11:30 AM", instructor: "Prof. Johnson" },
     { id: 2, name: "Computer Science", time: "2:00 PM", instructor: "Ms. Davis" },
