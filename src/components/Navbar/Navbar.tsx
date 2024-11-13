@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -43,14 +43,14 @@ const Navbar = () => {
 
   const handleSignIn = async () => {
     await signInWithGoogle();
-  }
+  };
   const handleSignOut = async () => {
     await GoogleSignOut();
     router.push("/"); // Redirect to the home page after sign-out
   };
 
   return (
-    <nav className="sm:fixed w-full z-50 bg-transparent bg-opacity-40 backdrop-blur-md px-6 py-3">
+    <nav className="fixed top-0 left-0 right-0 z-40 bg-transparent bg-opacity-100 backdrop-blur-md px-5 py-2">
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-between h-14">
           {/* Logo Section */}
@@ -105,7 +105,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 150 }}
             transition={{ ease: 'easeInOut', duration: 0.2 }}
-            className="fixed top-0 right-0 w-full h-screen bg-black bg-opacity-100 px-6 py-10 flex flex-col items-center space-y-6 z-50"
+            className="fixed top-0 right-0 w-full h-screen bg-black bg-opacity-90 px-6 py-10 flex flex-col items-center space-y-6 z-40"
           >
             <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-white focus:outline-none">
               <X size={28} className="text-yellow-400" />

@@ -7,21 +7,26 @@ import Timetable from './TimeTable';
 import Error from './Error';
 import useClassDetails from '@/hooks/useClassDetails';
 import useTimetable from '@/hooks/useTimetable';
+import LoadingScreen from './Loading';
 
 const Dashboard = () => {
-  const { classDetails, error } = useClassDetails();
-  const { timetables, isLoading, err } = useTimetable();
+  const { classDetails, error: classError, loading: classLoading } = useClassDetails();
+  const { timetables, isLoading: timetableLoading, err: timetableError } = useTimetable();
+
+  const isLoading = classLoading || timetableLoading;
+  const error: string | null = (classError as string) || (timetableError as string);
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />; 
   }
 
-  if (err) {
+  if (error) {
     return <div>Error: {error}</div>;
   }
 
-
   return (
     <div className="relative min-h-screen bg-stone-950 text-white p-4 md:p-8" id="dashboard">
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
           src={BgImage}
@@ -31,8 +36,11 @@ const Dashboard = () => {
           className="filter blur-lg opacity-80 object-cover"
         />
       </div>
+
+      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-stone-950 via-stone-900/80 to-transparent z-10"></div>
 
+      {/* Main Content */}
       <div className="relative z-20 max-w-6xl mx-auto"> 
         <h1 className="text-4xl font-extrabold mb-10 text-center md:text-left">Student Dashboard</h1>
         <div className="grid md:grid-cols-2 gap-10">

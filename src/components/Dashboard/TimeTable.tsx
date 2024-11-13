@@ -30,7 +30,7 @@ const Timetable = ({ timetables }: any) => {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse table-auto">
                 <thead>
-                  <tr className="bg-stone-800 text-yellow-500">
+                  <tr className="bg-stone-900 text-yellow-500">
                     <th className="py-3 px-4 border border-stone-700 text-xs sm:text-base">Day</th>
                     <th className="py-3 px-4 border border-stone-700 text-xs sm:text-base">9-9:55</th>
                     <th className="py-3 px-4 border border-stone-700 text-xs sm:text-base">10-10:55</th>
