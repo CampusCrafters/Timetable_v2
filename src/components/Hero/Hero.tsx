@@ -57,26 +57,26 @@ const Hero = () => {
       {/* Main Content */}
       <div className="relative z-20 max-w-6xl mx-auto px-4 py-20 text-center">
         {/* Main Heading */}
-        <h1 className="text-5xl md:text-6xl font-bold mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6">
           <span className="text-yellow-500">Time</span>
           <span className="text-white">Table</span>
         </h1>
         
         {/* Subheading with highlighted terms */}
-        <p className="text-2xl md:text-3xl text-white mb-16">
+        <p className="text-xl md:text-2xl text-white mb-12">
           An intelligent Scheduling Platform that helps you{' '}
           <span className="text-yellow-500 font-semibold">manage time</span> and{' '}
           <span className="text-yellow-500 font-semibold">stay productive</span>.
         </p>
 
          {/* Feature Cards */}
-         <div className="grid md:grid-cols-3 gap-8 mb-16">
+         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {/* Card 1 */}
-          <div className="bg-stone-900 p-8 rounded-xl border border-stone-800 hover:border-yellow-500/50 transition-colors">
+          <div className="bg-stone-900 p-4 rounded-xl border border-stone-800 hover:border-yellow-500/50 transition-colors">
             <div className="flex justify-center mb-4">
               <Calendar className="w-8 h-8 text-yellow-500" />
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-white">
+            <h3 className="text-xl font-semibold mb-2 text-white">
               Smart Schedule Analysis
             </h3>
             <p className="text-stone-400">
@@ -85,11 +85,11 @@ const Hero = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-stone-900 p-8 rounded-xl border border-stone-800 hover:border-yellow-500/50 transition-colors">
+          <div className="bg-stone-900 p-4 rounded-xl border border-stone-800 hover:border-yellow-500/50 transition-colors">
             <div className="flex justify-center mb-4">
               <Clock className="w-8 h-8 text-yellow-500" />
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-white">
+            <h3 className="text-xl font-semibold mb-2 text-white">
               Save Time
             </h3>
             <p className="text-stone-400">
@@ -98,11 +98,11 @@ const Hero = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-stone-900 p-8 rounded-xl border border-stone-800 hover:border-yellow-500/50 transition-colors">
+          <div className="bg-stone-900 p-4 rounded-xl border border-stone-800 hover:border-yellow-500/50 transition-colors">
             <div className="flex justify-center mb-4">
               <Users className="w-8 h-8 text-yellow-500" />
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-white">
+            <h3 className="text-xl font-semibold mb-2 text-white">
               Stay Organized
             </h3>
             <p className="text-stone-400">

@@ -1,85 +1,72 @@
-import { createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export const updateSession = async (request: NextRequest) => {
-  try {
-    // Create an unmodified response
-    let response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value),
-            );
-            response = NextResponse.next({
-              request,
-            });
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options),
-            );
-          },
+export async function updateSession(request: NextRequest) {
+  let supabaseResponse = NextResponse.next({
+    request,
+  })
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({
+            request,
+          })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
         },
       },
-    );
+    }
+  )
 
-    // Get user information and check session validity
-    const user = await supabase.auth.getUser()
-    const userEmail = user.data.user?.email;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-    // Protected routes
-    if (request.nextUrl.pathname === "/dashboard" && user.error) {
-      let res = NextResponse.redirect(new URL("/", request.nextUrl.origin));
-      res.cookies.set("AuthError", "SigninFirst");
-      console.log("Redirecting to home, AuthError: SigninFirst");
-      return res;
+
+  const adminEmailPattern = /.*@iiitkottayam\.ac\.in$/
+  const dashboardEmailPattern = /([a-z]+)(\d{2})([a-z]{3})(\d*)@iiitkottayam\.ac\.in/
+
+  if (!user) {
+    if (
+      request.nextUrl.pathname.startsWith('/admin') ||
+      request.nextUrl.pathname.startsWith('/dashboard')
+    ) {
+      return NextResponse.redirect('/');
+    }
+  } 
+  else {
+    if(user.email && adminEmailPattern.test(user.email) && !dashboardEmailPattern.test(user.email)){
+      console.log('redirecting to /admin')
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin'
+      return NextResponse.redirect(url)
     }
 
-    if (request.nextUrl.pathname === "/dashboard" && !userEmail?.match(/.*@iiitkottayam\.ac\.in$/)) {
-      let res = NextResponse.redirect(new URL("/", request.nextUrl.origin));
-      res.cookies.set("AuthError", "EnterCollegeEmail");
-      console.log("Redirecting to home, AuthError: EnterCollegeEmail");
-      return res;
+    if ( request.nextUrl.pathname.startsWith('/admin') && (!user.email || !adminEmailPattern.test(user.email) || (user.email && dashboardEmailPattern.test(user.email) && ! (user.email == "vijay23bcs7@iiitkottayam.ac.in")))) {
+      console.log('redirecting to /unauthorized')
+      const url = request.nextUrl.clone()
+      url.pathname = '/unauthorized'
+      return NextResponse.redirect(url)
     }
 
-    if (!user.error) {
-      if(request.nextUrl.pathname === "/") {
-        if (userEmail?.match(/.*@iiitkottayam\.ac\.in$/)) {
-          let res = NextResponse.redirect(new URL("/dashboard", request.nextUrl.origin));
-          res.cookies.set("AuthError", "");
-          console.log("Redirecting to dashboard");
-          return res;
-        }
-        let res = NextResponse.next()
-        res.cookies.set("AuthError", "EnterCollegeEmail");
-        console.log("Redirecting to home, AuthError: EnterCollegeEmail");
-        return res;
-      }
-      if(request.nextUrl.pathname === "/dashboard"){
-        let res = NextResponse.next()
-        res.cookies.set("AuthError", "");
-        console.log("Redirecting to dashboard");
-        return res;
-      }
+    if (
+      request.nextUrl.pathname.startsWith('/dashboard') &&
+      (!user.email || (user.email && !dashboardEmailPattern.test(user.email)))
+    ) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/unauthorized'
+      return NextResponse.redirect(url)
     }
-
-    return response;
-  } catch (e) {
-    console.error("Error in updateSession:", e);
-    return NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
   }
-};
+
+  return supabaseResponse
+}
+
