@@ -10,6 +10,7 @@ const useTimetable = () => {
     const fetchTimetable = async () => {
       try {
         const response = await axios.post("/api/timetable");
+        
         setTimetables(response.data);
         setIsLoading(false);
       } catch (err) {

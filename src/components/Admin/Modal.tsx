@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-950 via-stone-900/80 to-transparent z-10 rounded-lg"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-950 via-stone-950/80 to-transparent z-10 rounded-lg"></div>
 
         {/* Modal Content */}
         <div className="relative z-20">
