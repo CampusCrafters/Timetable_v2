@@ -19,11 +19,11 @@ const useClassDetails = () => {
     nextClasses: [],
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true); // New state for loading
+  const [loading, setLoading] = useState(true);
 
   const fetchDetails = async () => {
     try {
-      setLoading(true); // Start loading
+      setLoading(true);
       const response = await axios.post("/api/getclasses");
       const timetables = response.data.timetables;
 
@@ -69,7 +69,7 @@ const useClassDetails = () => {
       setError("Failed to fetch timetable. Please try again.");
       console.error(err);
     } finally {
-      setLoading(false); // End loading regardless of success or failure
+      setLoading(false);
     }
   };
 
@@ -77,7 +77,7 @@ const useClassDetails = () => {
     fetchDetails();
   }, []);
 
-  return { classDetails, error, loading }; // Return loading state
+  return { classDetails, error, loading }; 
 };
 
 export default useClassDetails;

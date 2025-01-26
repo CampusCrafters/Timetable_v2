@@ -35,11 +35,13 @@ export async function updateSession(request: NextRequest) {
   const dashboardEmailPattern = /([a-z]+)(\d{2})([a-z]{3})(\d*)@iiitkottayam\.ac\.in/
 
   if (!user) {
+
     if (
       request.nextUrl.pathname.startsWith('/admin') ||
       request.nextUrl.pathname.startsWith('/dashboard')
     ) {
-      return NextResponse.redirect('/');
+      const url = process.env.NEXT_PUBLIC_URL  || 'http://localhost:3000/';
+      return NextResponse.redirect(url);
     }
   } 
   else {

@@ -3,6 +3,7 @@ import {Inter} from 'next/font/google'
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({subsets: ['latin']})
 
@@ -18,6 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Analytics />
       <body className={inter.className}>
         <Navbar />
         {children}

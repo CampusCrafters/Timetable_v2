@@ -56,10 +56,8 @@ const Timetable = ({ timetables }: any) => {
                             {entry.course_id || "-"}
                           </td>
                         ))}
-                        {Array(8 - (daySchedule?.timetables.length || 0)).fill(null).map((_, i) => (
-                          <td key={`empty-${i}`} className="py-3 px-4 border border-stone-700 text-xs sm:text-base">
-                            -
-                          </td>
+                        {Array(Math.max(0, 8 - (daySchedule?.timetables.length || 0))).fill(null).map((_, i) => (
+                          <td key={`empty-${i}`} className="p-1 sm:p-2 text-stone-600">-</td>
                         ))}
                       </tr>
                     );
@@ -112,10 +110,8 @@ const Timetable = ({ timetables }: any) => {
                         {entry.course_id || "-"}
                       </td>
                     ))}
-                    {Array(8 - (daySchedule?.timetables.length || 0)).fill(null).map((_, i) => (
-                      <td key={`empty-${i}`} className="py-3 px-4 border border-stone-700 text-xs sm:text-base">
-                        -
-                      </td>
+                    {Array(Math.max(0, 8 - (daySchedule?.timetables.length || 0))).fill(null).map((_, i) => (
+                          <td key={`empty-${i}`} className="p-1 sm:p-2 text-stone-600">-</td>
                     ))}
                   </tr>
                 );

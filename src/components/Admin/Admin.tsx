@@ -1,13 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { 
-    GraduationCap, 
-    CalendarIcon, 
-    BookOpenIcon, 
-    UsersIcon, 
-    SearchIcon 
-} from 'lucide-react';
+import { GraduationCap, CalendarIcon, BookOpenIcon, UsersIcon, SearchIcon } from 'lucide-react';
 import BgImage from '../../../public/bg.png';
 import useTimetable from '@/hooks/useTimetableParams';
 import LoadingScreen from '../Dashboard/Loading';
@@ -22,13 +16,15 @@ const Admin = () => {
     const [course, setCourse] = useState('');
     const [batch, setBatch] = useState('');
     const [query, setQuery] = useState<string | null>(null);
-
+    
     const { timetables, isLoading, err } = useTimetable(query) as { timetables: any[], isLoading: boolean, err: string | null };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
         if (year && course && batch) {
-            setQuery(`${year}${course}${batch}`);
+            const queryValue = `${year}${course.toLowerCase()}${batch}`;
+            setQuery(queryValue);
+            document.cookie = `query=${queryValue}; path=/; max-age=86400;`; // Cookie expires in 1 day
         }
     };
 

@@ -29,7 +29,6 @@ export function modelAdmin() {
 }
 
 
-
 export const TimetableSchema = new mongoose.Schema<TimetableDocument>({
     day: { type: String, required: true },
     timetables: [
@@ -52,18 +51,26 @@ interface TimetableDocument extends mongoose.Document {
   
 interface ChangesDocument extends mongoose.Document {
     date: string;
+    year: string;
+    batch: string
     timings: string;
     exchange: {
       to: string;
+      lecturer_name: string;
     };
+    email: string
 }
   
 export const ChangeSchema = new mongoose.Schema<ChangesDocument>({
     date: { type: String, required: true },
+    year: { type: String, required: true},
+    batch: { type: String, required: true},
     timings: { type: String, required: true },
     exchange: {
       to: { type: String, required: true },
+      lecturer_name: {type: String, required: true}
     },
+    email: {type: String, required: false}
 });
 
 
@@ -76,3 +83,4 @@ interface AdminDocument extends mongoose.Document {
   email: string;
   password: string;
 }
+

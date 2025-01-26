@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const useTimetable = (detail: string | null) => {
   const [timetables, setTimetables] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [err, setError] = useState<unknown>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!detail) return;
@@ -13,10 +15,15 @@ const useTimetable = (detail: string | null) => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.post("/api/timetable/admin", {
+        const response = await axios.post('/api/timetable/admin', {
           userDetails: detail,
         });
-        setTimetables(response.data);
+        if (response.data.timetables?.length == 0) {
+          router.push('/admin/upload');
+        }
+        else {
+          setTimetables(response.data);
+        }
       } catch (err) {
         setError(err);
       } finally {
@@ -25,7 +32,7 @@ const useTimetable = (detail: string | null) => {
     };
 
     fetchTimetable();
-  }, [detail]);
+  }, [detail, router]);
 
   return { timetables, isLoading, err };
 };

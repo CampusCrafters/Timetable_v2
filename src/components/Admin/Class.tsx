@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaRegWindowMaximize } from "react-icons/fa";
 import Modal from "./Modal";
 
 interface ClassProps {
   className: string;
+  timings: string
 }
 
-const Class: React.FC<ClassProps> = ({ className }) => {
+const Class: React.FC<ClassProps> = ({ className,timings }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
@@ -27,7 +27,7 @@ const Class: React.FC<ClassProps> = ({ className }) => {
 
       {/* Modal Component */}
       {isOpen && (
-        <Modal isOpen={isOpen} onClose={toggleModal}></Modal>
+        <Modal isOpen={isOpen} onClose={toggleModal} timings={timings}></Modal>
       )}
     </div>
   );

@@ -33,10 +33,10 @@ const Timetable = ({ timetables }: any) => {
                   <td className="py-2 px-2 sm:py-3 sm:px-3 font-bold text-yellow-400 text-left">{day}</td>
                   {(daySchedule?.timetables || []).map((entry: any, index: number) => (
                     <td key={index} className="p-1 sm:p-2">
-                      <Class className={entry.course_id} />
+                      <Class className={entry.course_id} timings={entry.timings} />
                     </td>
                   ))}
-                  {Array(8 - (daySchedule?.timetables.length || 0)).fill(null).map((_, i) => (
+                  {Array(Math.max(0, 8 - (daySchedule?.timetables.length || 0))).fill(null).map((_, i) => (
                     <td key={`empty-${i}`} className="p-1 sm:p-2 text-stone-600">-</td>
                   ))}
                 </tr>
@@ -61,7 +61,7 @@ const Timetable = ({ timetables }: any) => {
                       <span className="text-stone-400 text-sm">{time}</span>
                       <div className="flex-grow text-right">
                         {classForTime ? (
-                          <Class className={classForTime.course_id} />
+                          <Class className={classForTime.course_id} timings={classForTime.timings} />
                         ) : (
                           <span className="text-stone-600">-</span>
                         )}
